@@ -11,6 +11,8 @@ import androidx.navigation.navArgument
 import com.example.latihanpertemuan9.ui.view.mahasiswa.DestinasiInsert
 import com.example.latihanpertemuan9.ui.view.mahasiswa.DetailMhsView
 import com.example.latihanpertemuan9.ui.view.mahasiswa.HomeMhsView
+import com.example.latihanpertemuan9.ui.view.mahasiswa.InsertMhsView
+import com.example.latihanpertemuan9.ui.view.mahasiswa.UpdateMhsView
 
 @Composable
 fun PengelolaHalaman(
@@ -35,4 +37,64 @@ fun PengelolaHalaman(
                 modifier = modifier
             )
         }
+        composable (
+            route =DestinasiInsert.route
+        ) {
+            InsertMhsView(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onNavigate = {
+                    navController.popBackStack()
+                },
+                modifier = modifier
+            )
+        }
+
+        composable (
+            DestinasiDetail.routesWithArg,
+            arguments = listOf(
+                navArgument(DestinasiDetail.NIM) {
+                    type = NavType.StringType
+                }
+            )
+        ){
+            val nim = it.arguments?.getString(DestinasiDetail.NIM)
+
+            nim?.let { nim ->
+                DetailMhsView(
+                    onBack = {
+                        navController.popBackStack()
+                    },
+                    onEditClick = {
+                        navController.navigate("${DestinasiUpdate.route}/$nim")
+                    },
+                    modifier = modifier,
+                    onDeleteClick = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
+
+        composable(
+            DestinasiUpdate.routesWithArg,
+            arguments = listOf(
+                navArgument (DestinasiUpdate.NIM) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            UpdateMhsView(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onNavigate = {
+                    navController.popBackStack()
+                },
+                modifier = modifier,
+            )
+        }
+    }
+}
 
